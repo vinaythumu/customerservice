@@ -1,0 +1,3 @@
+<aura:event type="APPLICATION" description="Conversation Reload Event" access="Global">
+    <aura:attribute name="recordId" required="true" type="String" description="PushTopic ID" access="Global"/>
+</aura:event>

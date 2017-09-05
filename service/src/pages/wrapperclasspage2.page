@@ -1,0 +1,36 @@
+<apex:page controller="demoClass1" >
+
+    <apex:form onmouseout="closeWindow();">
+
+     
+
+     <apex:pageBlock >
+
+         <apex:pageBlockButtons >
+
+             <apex:commandButton value="Previous Page" action="{!previouspage}"/>   
+
+         </apex:pageBlockButtons>
+
+         <apex:pageBlockSection >
+
+          
+            <apex:pageBlockTable value="{!listContactWrapper}" var="item">
+
+                  <apex:column value="{!item.c.Name}" rendered="{!item.isChecked}"/>
+
+                  <apex:column value="{!item.c.Email}" rendered="{!item.isChecked}" />
+
+             </apex:pageBlockTable>
+
+              
+
+         </apex:pageBlockSection>
+
+      
+
+     </apex:pageBlock>
+
+     </apex:form>
+
+</apex:page>

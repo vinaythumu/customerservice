@@ -1,0 +1,163 @@
+<aura:component controller="smagicinteract.CreateBulkSMSToolingApi" access="public" >
+    
+    <aura:handler name="init"	value="{!this}"	action="{!c.doInit}"	/>
+    
+    <aura:attribute name="allObjects"			type="smagicinteract.SelectOpt[]"  access="private" />
+    <aura:attribute name="allFields"			type="smagicinteract.SelectOpt[]" access="private" />
+    <aura:attribute name="allOptOutFields"		type="smagicinteract.SelectOpt[]" access="private"	/>
+    <aura:attribute name="nameFields"			type="smagicinteract.SelectOpt[]" access="private"	/>
+    <aura:attribute name="isOptOut"				type="smagicinteract.SelectOpt[]" access="private"	/>
+    <aura:attribute name="auraMessage"			type="String"	   access="private"	/>
+    <aura:attribute name="successMessage"		type="String"	   access="private"	/>
+    <aura:attribute name="showOptOut"           type="Boolean" access="private" default="false"	/>
+    <aura:attribute name="optOutCheckBox"		type="Boolean" access="private" default="true"	/>
+    
+    
+       
+    <aura:renderIf isTrue="{!v.auraMessage != null}">      
+        <ui:message title="{!$Label.smagicinteract.ERROR_TITLE}" severity="error" closable="false"><br/>
+            {!v.auraMessage}
+        </ui:message>
+    </aura:renderIf>
+    <aura:renderIf isTrue="{! if(v.successMessage,true,false)}">      
+        <ui:message title="{!$Label.smagicinteract.SUCCESS_MESSAGE}" severity="info" closable="false"><br/>
+            {!v.successMessage}
+        </ui:message>
+    </aura:renderIf>
+    
+    <div class="slds ">
+        <div class="slds-grid slds-wrap ">
+            <div	class="slds-p-horizontal--small slds-large-size--1-of-2">
+                <div class="slds-form-element ">
+                    <label class="slds-form-element__label">{!$Label.smagicinteract.PAGE_LABEL}</label>
+                    <div class="slds-form-element__control">
+                        <ui:inputText aura:id="pageLabel" class="slds-input" placeholder="{!$Label.smagicinteract.ENTER_PAGE_LABEL}" change="{!c.autoPopulateAPIName}"/>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div	class="slds-p-horizontal--small slds-large-size--1-of-2">
+                <div class="slds-form-element">
+                    <label class="slds-form-element__label">{!$Label.smagicinteract.PAGE_NAME}</label>
+                    <div class="slds-form-element__control">
+                        <ui:inputText aura:id="pageName" class="slds-input" placeholder="{!$Label.smagicinteract.ENTER_PAGE_NAME}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="slds-grid slds-wrap ">
+            <div	class="slds-p-horizontal--small slds-large-size--1-of-2">
+                <label	class="slds-form-element__label">{!$Label.smagicinteract.SELECT_OBJECT}</label>
+                <div	class="slds-select_container slds-m-bottom--xx-small">
+                    <ui:inputSelect class="slds-select"
+                                    aura:id="ObjectSelect"
+                                    change="{!c.selectedObjectChange}">
+                        <ui:inputSelectOption text=""
+                                              label="{!$Label.smagicinteract.SELECT_A_OBJECT}"
+                                              class="slds-select"	/>
+                        <aura:iteration items="{!v.allObjects}"	
+                                        var="obj"	>
+                            <ui:inputSelectOption text="{!obj.value}"
+                                                  label="{!obj.label}"
+                                                  class="slds-select"	/>
+                        </aura:iteration>
+                    </ui:inputSelect>
+                </div>
+                <br/>
+		<label	class="slds-form-element__label">{!$Label.smagicinteract.OPTOUT_FIELD}</label>
+                <div	class="slds-select_container slds-m-bottom--xx-small">
+                    <ui:inputSelect class="slds-select"
+                                    aura:id="OptOutFieldSelect" change="{!c.optOutChange}">
+                        <ui:inputSelectOption text=""
+                                              label="{!$Label.smagicinteract.SELECT_A_FIELD}"
+                                              class="slds-select"	/>
+                        <aura:iteration items="{!v.allOptOutFields}"	
+                                        var="field"	>
+                            <ui:inputSelectOption text="{!field.value}"
+                                                  label="{!field.label}"
+                                                  class="slds-select"	/>
+                        </aura:iteration>
+                    </ui:inputSelect>
+                </div>
+		<br/>
+		<aura:renderIf isTrue="{!v.showOptOut}">
+                    <label	class="slds-form-element__label">{!$Label.smagicinteract.OPTOUT_VALUE}</label>
+                    <div class="slds-select_container slds-m-bottom--xx-small" >
+                        <ui:inputSelect class="slds-select"
+                                        aura:id="isOptOut">
+                            <ui:inputSelectOption text=""
+                                                  label="{!$Label.smagicinteract.SELECT_A_OPTOUTDEFAULT}"
+                                                  class="slds-select"	/>
+                            <aura:iteration items="{!v.isOptOut}"	
+                                            var="field"	>
+                                <ui:inputSelectOption text="{!field.value}"
+                                                      label="{!field.label}"
+                                                      class="slds-select"	/>
+                            </aura:iteration>
+                            
+                        </ui:inputSelect>
+                    </div>
+                </aura:renderIf>
+                <br/>
+               
+                <label	class="slds-form-element__label">{!$Label.smagicinteract.SELECT_UNRELATED}</label>
+                
+                    <ui:inputSelect class="slds-select AddedList"
+                                    aura:id="unrelated"
+                                    multiple="true">
+                        <aura:iteration items="{!v.allObjects}"	
+                                        var="field"	>
+                            <ui:inputSelectOption text="{!field.value}"
+                                                  label="{!field.label}"
+                                                  class=""	/>
+                        </aura:iteration>
+                    </ui:inputSelect>
+               
+           
+            </div>
+            <br/>
+            <div	class="slds-p-horizontal--small slds-large-size--1-of-2">
+                <label	class="slds-form-element__label">{!$Label.smagicinteract.SELECT_MOBILE_FIELDS}</label>
+                
+                    <ui:inputSelect class="slds-select AddedList"
+                                    aura:id="MobileFieldsSelect"
+                                    multiple="true">
+                        <aura:iteration items="{!v.allFields}"	
+                                        var="field"	>
+                            <ui:inputSelectOption text="{!field.value}"
+                                                  label="{!field.label}"
+                                                  class=""	/>
+                        </aura:iteration>
+                    </ui:inputSelect>
+                
+                <br/>
+                <br/>
+		<label	class="slds-form-element__label">{!$Label.smagicinteract.SELECT_NAME_FIELD}</label>
+                <div	class="slds-select_container slds-m-bottom--xx-small">
+                    <ui:inputSelect class="slds-select"
+                                    aura:id="NameFieldSelect">
+                        <ui:inputSelectOption text=""
+                                              label="{!$Label.smagicinteract.SELECT_A_FIELD}"
+                                              class="slds-select"	/>
+                        <aura:iteration items="{!v.nameFields}"	
+                                        var="field"	>
+                            <ui:inputSelectOption text="{!field.value}"
+                                                  label="{!field.label}"
+                                                  class="slds-select"	/>
+                        </aura:iteration>
+                    </ui:inputSelect>
+                </div>
+                <br/>
+                <div	class="slds-container--small slds-float--right">
+                    <lightning:button variant="Brand"
+                                      label="{!$Label.smagicinteract.CREATE}"
+                                      onclick="{!c.createPage}"/>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+
+    
+</aura:component>

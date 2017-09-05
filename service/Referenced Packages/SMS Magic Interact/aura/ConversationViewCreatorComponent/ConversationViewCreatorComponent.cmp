@@ -1,0 +1,52 @@
+<aura:component Controller="ConversationViewCreatorServerController" access="public">
+    <aura:handler name="init" action="{!c.init}" value="{!this}" />
+    
+    <aura:attribute name="objectList" type="smagicinteract.MetaWrapper" access="private" />
+    <aura:attribute name="auraMessage" type="String" access="private" />
+    <aura:attribute name="successMessage" type="String" access="private" />
+   
+    <div id="WrapperDiv" class="wrapperClass">
+        <aura:renderIf isTrue="{!v.auraMessage != null}">      
+            <ui:message title="{!$Label.smagicinteract.ERROR_TITLE}" severity="error" closable="false"><br/>
+                {!v.auraMessage}
+            </ui:message>
+        </aura:renderIf>
+        <aura:renderIf isTrue="{!v.successMessage != null}">      
+            <ui:message title="{!$Label.smagicinteract.SUCCESS_MESSAGE}" severity="info" closable="false"><br/>
+                {!v.successMessage}
+            </ui:message>
+        </aura:renderIf>        
+        
+        <aura:renderIf isTrue="{!v.auraMessage == null}">
+			
+			<ui:message title="{!$Label.smagicinteract.HELPER_MESSAGE}" closable="false"><br/>
+                {!$Label.smagicinteract.CREAT_CONV_VIEW_HELPER}
+            </ui:message>
+            <br/>
+            <ui:outputText class="title" value="{!$Label.smagicinteract.VISUALFORCE_PAGE_DETAIL}"/>  &nbsp; <b>:</b> &nbsp;      
+            <br/>
+            <br/>
+            <ui:outputText class="titleLabel" value="{!$Label.smagicinteract.LABEL}"/>&nbsp; <b>:</b> &nbsp;        
+            <ui:inputText aura:id="pageLabelName" required="true"/> 
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <ui:outputText class="titleLabel" value="{!$Label.smagicinteract.NAME}"/>  &nbsp; <b>:</b> &nbsp;       
+            <ui:inputText aura:id="pageAPIName" required="true"/>
+            <br/><br/><br/>
+            
+            <ui:outputText aura:id="title" class="title" value="{!$Label.smagicinteract.Generate_Page_For_SMS_Conversation}"/>
+            <br/>
+            <br/>
+            <ui:outputText aura:id="titleLabel" class="titleLabel" value="{!$Label.smagicinteract.Select_Object_For_Conversation_View}"/>
+            <br/>
+            <ui:inputSelect aura:id="objectId" class="dropDownClass">		
+                <ui:inputSelectOption text="" label="{!$Label.smagicinteract.CONFG_PLZ_SLCT_OBJ}"/>
+                <aura:iteration items="{!v.objectList}" var="obj">
+                    <ui:inputSelectOption text="{!obj.name}" label="{!obj.label}"/>
+                </aura:iteration>
+            </ui:inputSelect>
+            <br/>
+            <br/>
+            <ui:button aura:id="button" label="{!$Label.smagicinteract.Generate_SMS_Conversation_Page}" press="{!c.createChat}"/>
+        </aura:renderIf>
+    </div>
+</aura:component>

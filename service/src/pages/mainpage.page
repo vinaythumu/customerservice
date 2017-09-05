@@ -1,0 +1,27 @@
+<apex:page standardController="Family_Data__c" extensions="mainpageconsole" >
+
+    <apex:form >
+        <apex:pageBlock >
+         <apex:image value="{!$Resource.facebook}" height="150" width="300"/>
+         <apex:outputText ><font size='10' color='Red'>Home Page</font></apex:outputText>
+         <apex:image value="{!$Resource.facebook2}" height="150" width="150"/>
+         <apex:pageBlockButtons >
+         <apex:commandButton action="{!Familyrefer2}" value="sign in "/>
+         <apex:commandButton action="{!familyrefer3}" value="login "/>
+         <apex:commandButton action="{!cancel}" value="cancel"/>
+         
+         </apex:pageBlockButtons>
+         <apex:repeat >something****************</apex:repeat>
+         <marquee behavior="scroll" direction="left">HTML scrolling text... </marquee>
+         <script>
+         function (){
+         alert('Alert box');
+         }
+         </script>
+
+        
+        </apex:pageBlock>
+         <apex:outputText ><font size='3' color='Green'>** If already signed in please click on log in button</font></apex:outputText>
+    </apex:form>
+
+</apex:page>

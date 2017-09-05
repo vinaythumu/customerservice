@@ -1,0 +1,21 @@
+<apex:page standardController="Account">
+    <apex:form >
+        <apex:pageBlock title="contact details">  
+        
+          <apex:pageBlockTable value="{!account.contacts}" var="itr">
+           <apex:column >
+               <apex:facet name="header">contact name</apex:facet>
+               {!itr.name}
+           </apex:column>
+            <apex:column >
+             <apex:facet name="header">id</apex:facet>
+             {!itr.id}
+            </apex:column>
+        </apex:pageBlockTable>
+        
+        </apex:pageBlock>
+      
+
+    </apex:form>
+ 
+</apex:page>

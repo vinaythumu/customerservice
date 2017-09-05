@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <connectedApp>SMS_Magic_Interact</connectedApp>
+    <description>Allow to view the SMS Settings related to tabs of &quot;Basis Setting&quot; and &quot;Incoming SMS Setting&quot;</description>
+    <label>AllowToViewSMSSettings</label>
+</CustomPermission>

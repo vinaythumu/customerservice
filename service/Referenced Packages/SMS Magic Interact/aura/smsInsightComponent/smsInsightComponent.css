@@ -1,0 +1,328 @@
+.THIS *{
+    font-family:"Open Sans", sans-serif;
+}
+.THIS.spinner {
+    position: fixed;
+}
+.THIS .Count:last-child{
+    font-size: 217%;
+    color: #008080;
+    text-align: center;
+    white-space : normal;
+    width : 100%;
+    display:inline-block;
+}
+
+.THIS .DateTime{
+    font-family:"Open Sans", sans-serif;
+    color:#999999;
+    font-size:10px;
+}
+
+/*
+.THIS.OuterClass{
+    height:100%;
+    width:100%;
+}
+*/
+
+.THIS .columnClass{
+    text-align:center;
+}
+
+.THIS .columnClass:last-child{
+    border-left:2px solid #808080;
+}
+
+.THIS .uiButton.sendButton{
+    background-color:#e87821;
+    width:100%;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.THIS button.uploadfilebutton {
+    font-size: 12px;
+    text-transform: none;
+    font-weight: normal;
+    padding: 6px 15px;
+    border-radius: 3px;
+    box-shadow: none;
+    border: 1px solid #888;
+    margin: 10px auto;
+    display: block;
+}
+.THIS .width-100 {
+    width: 100%;
+}
+
+.THIS .uiButton.sendButton span{
+	color:#ffffff;
+    text-shadow:0px 0px 0px transparent;
+}
+.THIS .uiInputTextArea.smsTxtBoxClass{
+}
+
+.THIS .uiInputSelect.dropDownClass{
+    width:100%;
+}
+
+.THIS .uiOutputText.MessageTitle:first-child{
+    font-size: 120%;
+    text-align: center;
+    white-space: normal;
+    font-weight:100;
+}
+
+.THIS .inboundMsg{
+    text-align: left;
+}
+
+.THIS .outboundMsg uiOutputTextArea smagicinteractSmsInsightComponent{
+    text-align: right;
+}
+
+.THIS.rowClass{
+    padding-top: .100em;
+    padding-bottom: .100em;
+}
+
+.THIS.tableClass{
+    background-color: #ffffff;
+    font-family:Open Sans;
+    width:100%;
+    border-collapse: separate;
+  	border-spacing: 25px 0;
+    max-height:20vh;
+    padding:3px 0px;
+}
+
+.THIS.tableClass thead{
+		padding:2px 0px;
+}
+
+.THIS.sendSMSWrapper{
+    background-color: #dbeff1;
+    padding:3px 0px;
+}
+
+
+.THIS.smsTableClass{
+    font-family:Open Sans;
+    width:100%;
+    border-collapse:separate;
+    border-spacing: 20px 0;
+    height:70vh;
+    max-height:70vh;
+    background-color: #dbeff1;
+    padding:7px 0px;
+}
+.THIS.smsTableClass tr th{
+    padding:3px 0px;
+}
+.THIS *, .THIS *:before, .THIS *:after {
+  box-sizing: border-box;
+}
+
+.THIS.latestmessagesheader {
+    background-color:#099ab2;
+    color:#ffffff;
+    font-weight:bold;
+    padding:3px;
+}
+
+.THIS.container {
+  margin: 0 auto;
+  border-radius: 5px;
+  font: 14px/20px "Lato", Arial, sans-serif;
+  color: white;
+}
+
+
+.THIS .chat {
+  width: 100%;
+  float: left;
+  background: #e6e6e6;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  color: #434651;
+}
+.THIS .chat-header {
+  padding: 20px;
+  border-bottom: 2px solid white;
+}
+.THIS .img {
+  float: left;
+}
+.THIS .chat-about {
+  float: left;
+  padding-left: 10px;
+  margin-top: 6px;
+}
+.THIS .chat-with {
+  font-weight: bold;
+  font-size: 16px;
+}
+.THIS .chat-num-messages {
+  color: #92959E;
+}
+.THIS .fa-star {
+  float: right;
+  color: #D8DADF;
+  font-size: 20px;
+  margin-top: 12px;
+}
+.THIS .chat-history {
+  padding: 1px 1px 1px;
+  overflow-y: scroll;
+  overflow-x:hidden;
+  max-height: 90vh;
+  min-height: 27vh;
+  position:relative;
+  margin-right:2%;
+  transition : max-height 2s;
+  background: #fff;
+  border-left: 1px solid #e0e5ee;
+}
+.THIS .chat-history:empty:before{
+    content:attr(data-aura-rendered-placeholder);
+    position:absolute;
+    top:45%;
+    color:#4d4d4d;
+}
+.THIS .message-data {
+  margin-bottom: 1px;
+}
+.THIS .message-data-time {
+  color: #a8aab1;
+  padding-left: 6px;
+}
+.THIS .message {
+  color: white;
+  font-size: 12px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  min-width: 30%;
+  max-width: 70%;
+  position: relative;
+  display:inline-block;
+  border:none;
+  text-align:left;
+  padding: 2px 10px 0 10px;
+}
+/*
+.THIS .message:after {
+  bottom: 100%;
+  left: 7%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-bottom-color: #86BB71;
+  border-width: 5px;
+
+}
+.THIS .other-message:after{
+    margin-left: -10px;
+}*/
+.THIS .my-message {
+  background: #f4f6f9;
+  color:#00396B;
+  margin-right:25%;
+}
+.THIS .other-message {
+  background: #D4D4D4;
+  border: 1px solid #e3e7ec;
+  color:#54698D;
+  margin-left:25%;
+}
+.THIS .other-message:after {
+  border-bottom-color: #94C2ED;
+  left: 93%;
+}
+.THIS .chat-message {
+  padding: 3px;
+}
+.THIS textarea {
+  width: 100%;
+  border: none;
+  padding: 10px 20px;
+  font: 14px/22px "Lato", Arial, sans-serif;
+  border-radius: 5px;
+  resize: none;
+}
+.THIS .fa-file-o, .THIS .fa-file-image-o {
+  font-size: 16px;
+  color: gray;
+  cursor: pointer;
+}
+.THIS button {
+  float: right;
+  color: #94C2ED;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  background: #F2F5F8;
+}
+.THIS button:hover {
+  color: #75b1e8;
+}
+
+.THIS .online, .THIS .offline, .THIS .me {
+  margin-right: 3px;
+  font-size: 10px;
+}
+
+.THIS .online {
+  color: #86BB71;
+}
+
+.THIS .offline {
+  color: #E38968;
+}
+
+.THIS .me {
+  color: #94C2ED;
+}
+
+.THIS .align-left {
+  text-align: left;
+  margin-right: 25%;
+}
+
+.THIS .align-right {
+  text-align: right;
+  margin-left: 25%;
+}
+
+.THIS .float-right {
+  float: right;
+}
+
+.THIS.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+
+.THIS .chat-history.minimized {
+    max-height : 27vh;
+}
+.THIS .mobileNumber {
+    background: none;
+    padding: 0;
+    color : #54698D;
+    margin-top: -12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 0px 0;
+    display: block;
+}
+.THIS .word-break{
+    word-break: break-all;
+}

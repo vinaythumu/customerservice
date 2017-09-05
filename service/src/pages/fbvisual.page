@@ -1,0 +1,12 @@
+<apex:page standardstylesheets="false" showheader="false" sidebar="false" controller="loginController">
+<apex:form >
+    <apex:outputPanel id="getInput" rendered="{!getInput}">
+    <apex:inputText styleClass="form-control" value="{!userName}"/>
+    <apex:inputText styleClass="form-control" value="{!password}" />
+    <apex:commandButton value="Login"  styleClass="btn btn-success btn-sm" action="{!searchUserName}" />
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!!getInput}">
+    <apex:outputText >{!ischeck}</apex:outputText>
+    </apex:outputPanel>
+</apex:form>
+</apex:page>

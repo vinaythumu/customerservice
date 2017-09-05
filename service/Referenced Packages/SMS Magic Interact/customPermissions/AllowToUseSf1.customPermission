@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <connectedApp>SMS_Magic_Interact</connectedApp>
+    <description>A custom permission used to restrict the message being sent from Sf1</description>
+    <label>AllowToUseSf1</label>
+</CustomPermission>

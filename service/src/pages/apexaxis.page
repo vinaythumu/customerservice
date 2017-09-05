@@ -1,0 +1,15 @@
+<apex:page >
+<apex:form >
+
+
+
+    <apex:axis type="Numeric" position="left" fields="data1"
+
+        title="Opportunities Closed" grid="true"/>
+
+   
+ 
+ 
+ </apex:form>
+ 
+</apex:page>

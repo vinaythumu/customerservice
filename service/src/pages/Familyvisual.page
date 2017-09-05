@@ -1,0 +1,43 @@
+<apex:page standardController="Family_Data__c" extensions="userpassword">
+  <apex:form >
+  
+    <apex:image value="{!$Resource.facebook}" height="150" width="300"/>
+    
+    <apex:outputText ><font size='10' color='Blue'>Sign up page</font></apex:outputText>
+    
+  
+     <apex:pageBlock title="Please enter username and password">
+     
+     <apex:pageBlockButtons >
+         <apex:commandButton Action="{!Familyrefer}" value="Save"/>
+         <apex:commandButton Action="{!Cancel}" Value="Cancel"/>
+     </apex:pageBlockButtons>
+      <apex:pageBlockSection title="please enter user Profile Name">
+     
+            <apex:outputText >Profile Name</apex:outputText>
+            <apex:inputText value="{!Name}"/>
+     </apex:pageBlockSection>
+     
+     
+     <apex:pageBlockSection title="please enter user name and password">
+     
+     <apex:outputText >enter username</apex:outputText>
+     <apex:inputText value="{!username}"/>
+     
+     <apex:outputText >enter Password</apex:outputText>
+     <apex:inputsecret value="{!Password}"/>
+
+     </apex:pageBlockSection>
+     
+     <apex:pageBlockSection >
+     
+        
+     </apex:pageBlockSection>
+    
+     
+     </apex:pageBlock>
+     
+   </apex:form>
+  
+  
+</apex:page>

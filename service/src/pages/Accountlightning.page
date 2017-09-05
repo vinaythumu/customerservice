@@ -1,0 +1,74 @@
+<apex:page standardController="Account" showHeader="true" standardStylesheets="true" sidebar="true" applyHtmlTag="true" applyBodyTag="true" docType="html-5.0">
+
+ 
+<head>
+ 
+  <apex:slds />
+
+</head>
+
+
+   
+     <apex:form styleClass="myFormStyle"> 
+  
+     <div class="slds-text-align_center">  <div class="slds-text-heading_large"> ACCOUNT CREATION APP</div></div>
+     
+    
+   
+   
+      <apex:pageBlock >  
+      
+      
+      <apex:pageBlockButtons >
+          <apex:commandButton styleClass="slds-button slds-button_success" action="{!Save}" value="save"/>
+          
+          <apex:commandButton styleClass="slds-button slds-button_destructive" action="{!Cancel}" value="Cancel"/>
+      </apex:pageBlockButtons>
+      
+      
+      <apex:pageBlockSection >
+     
+     
+    
+         
+              <apex:inputField styleClass="slds-input" value="{!Account.Name}"  html-placeholder="Account Name" style="width: 200px; height: 200px nowrap"></apex:inputfield>
+              
+              <apex:inputField styleClass="slds-input" value="{!Account.Active__c}" style="width: 200px; height: 100px nowrap"></apex:inputfield>
+             
+              
+              <apex:inputField styleClass="slds-checkbox_faux" value="{!Account.Required__c}"></apex:inputfield> 
+            
+              <apex:inputField styleClass="slds-datepicker__filter_month " value="{!Account.date__c}"></apex:inputfield> 
+              
+              
+             
+  <div class="slds-form-element">
+    <label class="slds-checkbox_toggle slds-grid">
+      <span class="slds-form-element__label slds-m-bottom_none">Required</span>
+      <input type="checkbox" name="checkbox" aria-describedby="{!Account.required__c}" value="{!Account.Required__c}"></input>
+      <span id="{!Account.required__c}" class="slds-checkbox_faux_container" aria-live="assertive">
+        <span class="slds-checkbox_faux"></span>
+        <span class="slds-checkbox_on">Enabled</span>
+        <span class="slds-checkbox_off">Disabled</span>
+      </span>
+    </label>
+  </div>
+
+    
+   
+         
+              
+           <!--   <input type="date"  class="slds-input" placeholder="Placeholder Text" value="{!Account.date__c}">date</input> 
+              <input type="checkbox"  class="slds-input"  value="{!Account.Required__c}">required</input> -->
+               
+               
+      </apex:pageBlockSection>
+
+
+     
+      </apex:pageBlock>
+      
+    
+  </apex:form>  
+  
+</apex:page>

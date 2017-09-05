@@ -1,0 +1,24 @@
+<apex:page standardController="Family_Data__c" >
+  <apex:form >
+  
+   
+  
+     <apex:pageBlock title="Here is the phone number">
+     
+              
+     
+     <apex:pageBlockSection title="phone number">
+     
+    <apex:inputField value="{!Family_Data__c.phone__c}"/>    
+     
+         </apex:pageBlockSection>
+     
+ 
+    
+     
+     </apex:pageBlock>
+     
+   </apex:form>
+  
+  
+</apex:page>

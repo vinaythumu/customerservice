@@ -1,0 +1,23 @@
+<apex:page id="thepage" controller="PageController">
+
+    <apex:form id="theform">
+
+        <apex:commandlink action="{!changeEnglish}" rerender="theform" value="English"/>
+
+        <apex:commandlink action="{!changeFrench}" rerender="theform" value="French"/>
+
+        <apex:outputpanel rendered="{!!isFrench}">
+
+        English words
+
+        </apex:outputpanel>
+
+        <apex:outputpanel rendered="{!isFrench}">some one is here
+
+        mots français
+
+        </apex:outputpanel>      
+
+    </apex:form>
+
+</apex:page>

@@ -1,0 +1,52 @@
+<apex:page controller="demoClass1">
+
+    <apex:form >
+
+
+     
+
+     <apex:pageBlock id="PageBlockId" title="Test Wrapper Class">
+     
+    
+
+          
+
+         <apex:pageBlockButtons >
+
+               <apex:commandButton value="Next Page" action="{!nextpage}" onclick="return openWindow();"/>  
+
+         </apex:pageBlockButtons>
+
+         <apex:pageBlockSection >
+
+          
+
+             <apex:pageBlockTable value="{!listContactWrapper}" var="item">
+
+                  
+
+                 <apex:column >
+
+                       <apex:inputCheckbox value="{!item.isChecked}"/>   
+
+                 </apex:column>
+
+              
+
+                  <apex:column value="{!item.c.Name}"/>
+
+                  <apex:column value="{!item.c.Email}"/>
+
+             </apex:pageBlockTable>
+
+              
+
+         </apex:pageBlockSection>
+
+      
+
+     </apex:pageBlock>
+
+     </apex:form>
+
+</apex:page>

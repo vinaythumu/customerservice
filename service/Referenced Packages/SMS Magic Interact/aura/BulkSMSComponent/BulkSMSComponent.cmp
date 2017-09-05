@@ -1,0 +1,305 @@
+<aura:component access="GLOBAL" controller="smagicinteract.LightningBulkSMSController">
+    
+    <aura:handler name="init"   value="{!this}" action="{!c.doInit}"    />
+    
+    <aura:attribute name="recipientClass"        type="smagicinteract.RecipientListClass" access="private" />
+    <aura:attribute name="excludedRecipientList" type="String[]" access="private" />
+    <aura:attribute name="unrelatedObjectIdList" type="String[]" access="private" />
+    
+    <aura:attribute name="objectName"           type="String" access="global" /> 
+    <aura:attribute name="mobileFields"         type="String" access="global" /> 
+    <aura:attribute name="unrelatedObjects"     type="String" access="global" /> 
+    <aura:attribute name="defaultSenderId"      type="String" access="private" /> 
+    <aura:attribute name="nameField"            type="String" access="global" />
+    <aura:attribute name="IdList"               type="String" access="global" />
+    <aura:attribute name="fileUrl"              type="String" access="private" />
+    <aura:attribute name="auraSuccessMessage"   type="String" access="private" />
+    <aura:attribute name="auraErrorMessage"     type="String" access="private" />
+    <aura:attribute name="auraInfoMessage"      type="String" access="private" />
+    <aura:attribute name="templateText"         type="String" access="private" />
+    <aura:attribute name="optOutField"          type="String" access="global" />
+    <aura:attribute name="characterCount"       type="String" access="private" />
+    <aura:attribute name="recipientsCount"      type="String" access="private" />
+    
+    <aura:attribute name="selectedUnrelatedKey" type="Integer" access="private" /> 
+    <aura:attribute name="allSenderId"          type="smagicinteract.SelectOpt[]" access="private" />
+    <aura:attribute name="allTemplate"          type="smagicinteract.SelectOpt[]" access="private" />
+    <aura:attribute name="unrelatedRecordList"  type="smagicinteract.SelectOpt[]" access="private" />
+    
+    <aura:attribute name="optOutCheckBox"       type="Boolean"      access="global" /> 
+    <aura:attribute name="showMMSSection"       type="Boolean"      access="private" default="false"/> 
+    <aura:attribute name="showUnrelatedPanel"   type="Boolean"      access="private" default="false"/> 
+    <aura:attribute name="disableMe"            type="Boolean"      access="private" default="false"/> 
+    <aura:attribute name="AllowToChangeOptout"  type="Boolean"      access="private" default="false"/>
+    <aura:attribute name="AllowToSendMMS"       type="Boolean"      access="private" default="false"/>
+    <aura:attribute name="AllowToChangeTemplateSelection" type="Boolean" access="private" default="false"/>
+    
+
+    <aura:renderIf isTrue="{! if(v.auraSuccessMessage,true,false)}">      
+        <ui:message title="{!$Label.smagicinteract.SUCCESS}"	
+                    class="auraMessageTitle"
+                    severity="confirm"	
+                    closable="false">
+            {!v.auraSuccessMessage}
+        </ui:message>
+    </aura:renderIf>
+    <aura:renderIf isTrue="{!if(v.auraErrorMessage,true,false)}">      
+        <ui:message title="{!$Label.smagicinteract.ERROR_TITLE}"
+                    class="auraMessageTitle"
+                    severity="error"	
+                    closable="false">
+            {!v.auraErrorMessage}
+        </ui:message>
+    </aura:renderIf>
+    <aura:renderIf isTrue="{!if(v.auraInfoMessage,true,false)}">      
+        <ui:message title="{!$Label.smagicinteract.INFO}"
+                    class="auraMessageTitle"
+                    severity="info"	
+                    closable="false">
+            {!v.auraInfoMessage}
+        </ui:message>
+    </aura:renderIf>
+    <div class="slds">
+        <div class="slds-grid slds-wrap slds-grid--pull-padded">
+            <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--6-of-12" style="background-color:#f5f7fa;padding-top:10px;">
+                <div class="slds-text-heading--medium tableHeading">{!v.recipientsCount}</div>
+                <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--1-of-1" style="overflow-y:auto;height:500px;">
+                    <table class="slds-table slds-table--bordered slds-table--cell-buffer addMargin" role="grid" style="background-color:#f5f7fa;">
+                        <thead>
+                            <tr class="slds-text-title--caps slds-cell-wrap textTransform">
+                                <th scope="col" class="slds-cell-wrap">
+                                    <div class="addWordBreak" title="{!$Label.smagicinteract.LABEL_NAME}"> {!$Label.smagicinteract.LABEL_NAME} </div>
+                                </th>
+                                <th scope="col" class="slds-cell-wrap">
+                                    <div class="addWordBreak" title="{!$Label.smagicinteract.LABEL_PHONE_FIELD_TYPE}"> {!$Label.smagicinteract.LABEL_PHONE_FIELD_TYPE} </div>
+                                </th>
+                                <th scope="col" class="slds-cell-wrap">
+                                    <div class="addWordBreak" title="{!$Label.smagicinteract.LABEL_MOBILE_PHONE}" > {!$Label.smagicinteract.LABEL_MOBILE_PHONE} </div>
+                                </th>
+                                <th scope="col" class="slds-cell-wrap">
+                                    <div class="addWordBreak" title="{!$Label.smagicinteract.ACTION}" >
+                                        {!$Label.smagicinteract.ACTION}
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <aura:iteration items="{!v.recipientClass.recipientList}" var="sms">
+                                <tr>
+                                    <td data-label="{!$Label.smagicinteract.LABEL_NAME}" class="slds-cell-wrap">
+                                        <div class="addWordBreak" >{!sms.name}</div>
+                                    </td>
+                                    <td data-label="{!$Label.smagicinteract.LABEL_PHONE_FIELD_TYPE}" class="slds-cell-wrap">
+                                        <div class="addWordBreak">{!sms.phoneFieldType}</div>
+                                    </td>
+                                    <td data-label="{!$Label.smagicinteract.LABEL_MOBILE_PHONE}" class="slds-cell-wrap">
+                                        <div class="addWordBreak">{!sms.mobileNumber}</div>
+                                    </td>
+                                    <td data-label="{!$Label.smagicinteract.LABEL_REMOVE}" class="slds-cell-wrap">
+                                        <button class="slds-button slds-button--neutral unrelatedTableButton" type="button" onclick="{!c.removeRecipient}" id="{!sms.key}">X</button>
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--6-of-12">
+                <div class="slds-text-heading--medium tableHeading">{!$Label.smagicinteract.COMPOSE_MESSAGE}</div>
+                <aura:renderIf isTrue="{! if(v.showUnrelatedPanel,true,false)}">
+                    <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--1-of-1 addMargin">
+                        <!--{!$Label.smagicinteract.UNRELATED_PANEL}-->
+                        <table class="slds-table slds-table--bordered slds-table--cell-buffer slds-table--fixed-layout unrelatedTable" role="grid">
+                            <thead>
+                                <tr class="slds-text-title--caps slds-cell-wrap textTransform">
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="{!$Label.smagicinteract.NUMBER}">{!$Label.smagicinteract.NUMBER}</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="{!$Label.smagicinteract.Unrelated_Object_Name}">{!$Label.smagicinteract.Unrelated_Object_Name}</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="{!$Label.smagicinteract.UNRELATED_SEARCH_HELPER_TEXT}">{!$Label.smagicinteract.Search_String}</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="{!$Label.smagicinteract.SEARCH}" >{!$Label.smagicinteract.SEARCH}</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="{!$Label.smagicinteract.SELECTED_RECORD}" >{!$Label.smagicinteract.SELECTED_RECORD}</div>
+                                    </th> 
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="{!$Label.smagicinteract.ACTION}" >{!$Label.smagicinteract.ACTION}</div>
+                                    </th> 
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.recipientClass.unrelatedObjectStoreList}" var="wrap">
+                                    <tr class="slds-cell-wrap">
+                                        <td data-label="{!$Label.smagicinteract.NUMBER}" title="{!wrap.rowNumber}">
+                                            <div class="slds-truncate" >{!wrap.rowNumber}</div>
+                                        </td>
+                                        <td data-label="{!$Label.smagicinteract.Unrelated_Object_Name}" title="{!wrap.objectLabel}">
+                                            <div class="slds-truncate">{!wrap.objectLabel}</div>
+                                        </td>
+                                        <td data-label="{!$Label.smagicinteract.UNRELATED_SEARCH_HELPER_TEXT}">
+                                            <div class="slds-truncate">
+                                                <ui:inputText aura:id="searchString"
+                                                              class="slds-textarea textSearch"
+                                                              value="{!wrap.searchString}" />
+                                            </div>
+                                        </td>
+                                        <td data-label="{!$Label.smagicinteract.SEARCH_ALL_FIELDS}">
+                                            <button class="slds-button slds-button--neutral unrelatedTableButton" type="button" onclick="{!c.searchUnrelatedObject}" id="{!wrap.rowNumber}">
+                                                {!$Label.smagicinteract.SEARCH}
+                                            </button> 
+                                        </td>
+                                        <td data-label="{!$Label.smagicinteract.UNRELATED_SELECTED_RECORD_HELPER}" class="slds-truncate" title="{!wrap.recordName}">
+                                            {!wrap.recordName}
+                                        </td>
+                                        <td data-label="{!$Label.smagicinteract.LABEL_REMOVE}">
+                                            <button class="slds-button slds-button--neutral unrelatedTableButton" type="button" onclick="{!c.removeUnrelatedObject}" id="{!wrap.rowNumber}">
+                                                <!--c:svgIcon class="slds-button__icon slds-button__icon- -left" svgPath="{!$Resource.SLDSv2 +'/assets/icons/utility-sprite/svg/symbols.svg#remove'}" size="small"/-->
+                                                X
+                                            </button> 
+                                        </td>        
+                                    </tr>
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--1-of-1 addMargin" style="overflow-y:auto;max-height:200px;">
+                        <aura:iteration items="{!v.unrelatedRecordList}"
+                                        var="record">
+                            <input type="radio"
+                                   name="unrelatedRecordRadio"
+                                   id="{!record.value}"
+                                   value="{!record.label}"
+                                   onclick="{!c.unrelatedRecordSelection}" /> 
+                            &nbsp;&nbsp; {!record.label}
+                            <br/>
+                        </aura:iteration>
+                    </div>
+                </aura:renderIf>
+                <div class="slds-grid slds-wrap slds-grid--pull-padded addMargin">
+                    <div class="slds-col--padded slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--1-of-2">
+                        <label class="slds-form-element__label" style="padding-left:10px;">{!$Label.smagicinteract.SENDER_ID}:</label>
+                        <div class="slds-picklist" style="padding-left:10px;">
+                            <ui:inputSelect class="slds-select"
+                                            aura:id="SenderIdSelect">
+                                <ui:inputSelectOption text=""	
+                                                      label="{!$Label.smagicinteract.SenderId_Default}"
+                                                      class="slds-truncate"	/>
+                                <aura:iteration items="{!v.allSenderId}"	
+                                                var="sid" >
+                                    <!--change sid.label to sid.value if id required for lookup  -->
+                                    <ui:inputSelectOption text="{!sid.label}"
+                                                          label="{!sid.label}"
+                                                          class="slds-truncate"	/>
+                                </aura:iteration>
+                            </ui:inputSelect>
+                        </div>
+                    </div>
+                    <div class="slds-col--padded slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--1-of-2">
+                        <label class="slds-form-element__label" style="padding-right:15px;">{!$Label.smagicinteract.USE_TEMPLATES}:</label>
+                        <div class="slds-picklist" style="padding-right:15px;">
+                            <ui:inputSelect class="slds-select"
+                                            aura:id="TemplateSelect"
+                                            change="{!c.getTemplateText}"	>
+                                <ui:inputSelectOption text=""
+                                                      label="{!$Label.smagicinteract.CONFG_PLZ_SLCT_TMPLT}"
+                                                      class="slds-truncate" />
+                                <aura:iteration items="{!v.allTemplate}"
+                                                var="template">
+                                    <ui:inputSelectOption text="{!template.value}"
+                                                          label="{!template.label}"
+                                                          class="slds-truncate"	/>
+                                </aura:iteration>
+                            </ui:inputSelect>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--1-of-1 addMargin">
+                    <label class="slds-form-element__label slds-float--right">{!v.characterCount}</label>
+                    <label class="slds-form-element__label">{!$Label.smagicinteract.MESSAGE_TEXT}</label>
+                    <div class="slds-form-element__control">
+                        <ui:inputTextArea aura:id="textField"
+                                          class="slds-textarea"
+                                          value="{!v.templateText}"
+                                          rows="4"
+                                          placeholder="{!$Label.smagicinteract.BLANK_TEXT_MSG}"
+                                          keyup="{!c.countFunction}"
+                                          updateOn="keyup"
+                                          disabled="{!!v.AllowToChangeTemplateSelection}"/>
+                    </div>
+                </div>
+                <aura:renderIf isTrue="{! if(v.AllowToSendMMS,true,false)}">
+                    <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--1-of-1 addMargin" >
+                        <lightning:button variant="neutral"
+                                          label="{!$Label.smagicinteract.ATTACH_MEDIA}"
+                                          onclick="{!c.showHideMMSSection}"/>
+                    </div>
+                    <aura:renderIf isTrue="{! if(v.showMMSSection,true,false)}">
+                        <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--1-of-1">
+                            <div class="addPadding addBorder addMargin">
+                                <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--1-of-1 addMargin">
+                                    <label class="slds-form-element__label slds-float--right tooltip">
+                                        {!$Label.smagicinteract.INSTRUCTIONS}
+                                        <div class="tooltiptext">
+                                            <p> {!$Label.smagicinteract.SPRTD_FILE_SIZE} {!v.recipientClass.mmsFileDetails.maxSupportedFileSize} </p>
+                                            <p> {!$Label.smagicinteract.SPRTD_FILE_FRMTS} {!v.recipientClass.mmsFileDetails.supportedFileFormats} </p>
+                                        </div>
+                                    </label>
+                                    <label class="slds-form-element__label">{!$Label.smagicinteract.MMS_SUBJECT}</label>
+                                    <div class="slds-form-element__control">
+                                        <ui:inputText aura:id="mmsSubject"
+                                                      class="slds-input"
+                                                      placeholder="{!$Label.smagicinteract.ENTER_MMS_SUBJECT}"/>
+                                    </div>
+                                </div>
+                                <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--1-of-1 addMargin">
+                                    <lightning:button variant="neutral"
+                                                      class="slds-float--right"
+                                                      label="{!$Label.smagicinteract.LABEL_ATTACH}"
+                                                      onclick="{!c.uploadFile}"/>
+                                    <input type="file"
+                                           class="inputFile"
+                                           aura:id="upload_file" />
+                                </div>
+                                <aura:renderIf isTrue="{! if(v.fileUrl, true, false)}">
+                                    <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--1-of-1 addMargin">
+                                        <a href="{!v.fileUrl}" target="_blank"> {!$Label.smagicinteract.VIEW_ATTACHED_FILE} </a>
+                                        <lightning:button variant="neutral"
+                                                          class="removeButton"
+                                                          label="X"
+                                                          onclick="{!c.removeFile}"/>
+                                    </div>
+                                </aura:renderIf>
+                            </div>
+                        </div>
+                    </aura:renderIf>
+                </aura:renderIf>
+                 <aura:renderIf isTrue="{!if(v.optOutField,true,false)}">
+                <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--1-of-1 addMargin">
+                    <ui:inputCheckBox aura:id="optOutCheckBoxId"
+                                      class="slds-checkbox"
+                                      disabled="{!!v.AllowToChangeOptout}"
+                                      value="{!v.optOutCheckBox}"/>
+                    <label class="slds-form-element__label"> &nbsp;{!$Label.smagicinteract.SEND_TO_OPTOUT_MEMBERS}</label>
+                </div>
+                </aura:renderIf>
+                <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--1-of-1 addMargin" >
+                    <lightning:button variant="brand"
+                                      class="slds-float--right"
+                                      label="{!$Label.smagicinteract.CONFG_SND_SMS}"
+                                      onclick="{!c.sendSMS}"
+                                      disabled="{!v.disableMe}"/>
+                    <lightning:button variant="neutral"
+                                      class=""
+                                      label="{!$Label.smagicinteract.CANCEL}"
+                                      onclick="{!c.navigationToHome}" />
+                </div>
+            </div>
+          
+        </div>
+    </div>
+</aura:component>

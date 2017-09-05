@@ -1,0 +1,18 @@
+<apex:page Controller="autotext" docType="html-5.0">
+ <apex:form >
+   <apex:pageBlock >
+ <Script>
+
+   function()
+   {
+   Alert('Hii every one');
+   }
+   
+ </Script>
+      
+     <apex:outputText >Enter the Existing Name</apex:outputText>
+
+  <apex:inputText list="{!listOfStrings}"/>
+  </apex:pageBlock>
+ </apex:form>
+</apex:page>

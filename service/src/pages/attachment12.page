@@ -1,0 +1,20 @@
+<apex:page standardController="Account" extensions="SafetyObservationExtensionController">
+<apex:messages dir="everything is fine"/>
+    <apex:form id="theForm">
+        <apex:pageBlock title="New Safety Observation Form">
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton action="{!cancel}" value="Cancel"/>
+                <apex:commandButton action="{!save}" value="Submit"/>
+            </apex:pageBlockButtons> 
+            <apex:pageBlockSection columns="1">
+                <apex:inputField label="Account name" value="{!Account.Name}"/>
+                <apex:inputField label="Type" value="{!Account.Type}"/>
+                <apex:inputField label="Industry" value="{!Account.industry}"/>        
+                <apex:inputFile value="{!attachment.body}" filename="{!attachment.name}"/>
+            </apex:pageBlockSection>
+            <apex:repeat value="{!Account.attachments}" var="attachment">
+               <!-- <apex:image height="200px" value="{!URLFOR($Action.Attachment.Download, attachment.Id)}"/><p/> -->
+            </apex:repeat>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

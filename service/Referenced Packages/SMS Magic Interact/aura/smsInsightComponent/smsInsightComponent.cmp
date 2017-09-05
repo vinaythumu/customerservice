@@ -1,0 +1,244 @@
+<aura:component Controller="smsInsightServerController" access="global" implements="force:appHostable,flexipage:availableForAllPageTypes">
+    <aura:handler name="init" action="{!c.init}" value="{!this}" />
+    <aura:handler event="smagicinteract:ConversationReload" action="{!c.reloadConversation}"/>
+	<aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+
+    <aura:attribute name="displayInboundNumber" type="Boolean" default="false" access="global" />
+    <aura:attribute name="displayOutboundNumber" type="Boolean" default="false" access="global" />
+    <aura:attribute name="allowToSendMMS" type="Boolean" default="false" access="private" />
+    <aura:attribute name="permissionErrorMessage" type="String" access="private"/>
+    <aura:attribute name="auraMessage" type="String" access="private"/>
+    <aura:attribute name="messages" type="smagicinteract.Message" access="private" />
+    <aura:attribute name="templateTextPermission" type="String" access="private" />
+    <aura:attribute name="phoneList" type="smagicinteract.MetaWrapper" access="private" />
+    <aura:attribute name="templateNameList" type="smagicinteract.MetaWrapper" access="private" />
+    <aura:attribute name="senderList" type="smagicinteract.MetaWrapper" access="private" />
+    <aura:attribute name="templateTextList" type="smagicinteract.MetaWrapper" access="private" />
+    <aura:attribute name="objectId" type="String" access="global" />
+    <aura:attribute name="mmsSubject" type="String" access="private" />
+    <aura:attribute name="fileUrl" type="String" access="private" />
+    <aura:attribute name="mmsUploadSuccess" type="String" access="private" />
+    <aura:attribute name="allowToChangeTemplateSelection" type="String" access="private" />
+    <aura:attribute name="smsText" type="String" access="private" />
+    <aura:attribute name="smsCharLimit" type="Integer" access="private" />
+    <aura:attribute name="bubbleColors" type="String" access="global" />
+    <aura:attribute name="mobileFields" type="String" access="global" />
+
+    <aura:handler name="change" value="{!v.messages}" action="{!c.scrollPosition}"/>
+
+    <lightning:spinner aura:id="mySpinner" class="spinner" />
+    <aura:renderIf isTrue="{!v.mmsUploadSuccess != null}">
+        <ui:message title="{!$Label.smagicinteract.SUCCESS}" severity="confirm" closable="false">
+            <p>{!v.mmsUploadSuccess}</p>
+        </ui:message>
+    </aura:renderIf>
+
+    <aura:renderIf isTrue="{!v.auraMessage != null}">
+        <ui:message title="{!$Label.smagicinteract.ERROR_TITLE}" severity="error" closable="false">
+            <p>{!v.auraMessage}</p>
+        </ui:message>
+    </aura:renderIf>
+
+    <aura:renderIf isTrue="{!v.permissionErrorMessage != null}">
+        <ui:message title="{!$Label.smagicinteract.ERROR_TITLE}" severity="error" closable="false">
+            <p>{!v.permissionErrorMessage}</p>
+        </ui:message>
+    </aura:renderIf>
+
+    <aura:renderIf isTrue="{!v.templateTextPermission != null}">
+        <ui:message title="{!$Label.smagicinteract.ERROR_TITLE}" severity="error" closable="false">
+            <p>{!v.templateTextPermission}</p>
+        </ui:message>
+    </aura:renderIf>
+
+    <div class="latestmessagesheader">
+        {!$Label.smagicinteract.Latest_SMS_Sent}
+    </div>
+
+    <div class="container clearfix">
+        <div class="chat">
+            <div data-aura-rendered-placeholder="{!$Label.smagicinteract.NO_TXT_TO_DISPLAY}" 
+                 class="chat-history"
+                 aura:id="chatHistory"
+                 id="chat-history0">
+                <aura:iteration items="{!v.messages}" var="msg">
+                    <span>
+                        <aura:if isTrue="{!msg.msgType == 'I'}">
+                            <div class="message my-message">
+                                <aura:if isTrue="{!v.displayInboundNumber}">
+                               		<div class="message mobileNumber align-left">
+                                   		{!msg.mobileNumberLabel}
+                                	</div>
+                            	</aura:if>
+                                <!-- TODO Conditionaly add tag for showing mutimedia content -->
+                                <aura:iteration items="{!msg.channelData.urls}" var="data">
+                                    <aura:if isTrue="{!data.type == 'VIDEO'}">
+                                        <video width="320" height="240" controls="true">
+                                            <source src="{!data.path}" type="video/mp4" />
+                                            Your browser does not support HTML5 video.
+                                        </video>
+                                    </aura:if>
+                                    <aura:if isTrue="{!data.type == 'IMAGE'}">
+                                        <img src="{!data.path}" width="320" height="240" />
+                                    </aura:if>
+                                    <aura:if isTrue="{!data.type == 'ANIMATION'}">
+                                        <img src="{!data.path}" width="320" height="240" />
+                                    </aura:if>
+                                    <aura:if isTrue="{!data.type == 'YOUTUBE'}">
+                                        <iframe src="{!data.path}" width="320" height="240" />
+                                    </aura:if>
+                                    <aura:if isTrue="{!data.type == 'FILE'}">
+                                        <a href="{!data.path}" download="true">Download</a>
+                                    </aura:if>
+                                    <br/>
+                                </aura:iteration>
+                                <ui:outputText class="word-break" value="{!msg.message}" />
+                                <div class="DateTime">
+                                    {!msg.CreatedDateForMessage}
+                                </div>
+                            </div>
+                        </aura:if>
+                    </span>
+                    <span>
+                        <aura:if isTrue="{!msg.msgType == 'O'}">
+                            <div class="message other-message float-right">
+                                <aura:if isTrue="{!v.displayOutboundNumber}">
+                               		<div class="message  mobileNumber ">
+                                   		{!msg.mobileNumberLabel}
+                               		</div>
+                            	</aura:if>
+                                <!-- TODO Conditionaly add tag for showing mutimedia content -->
+                                <aura:iteration items="{!msg.channelData.urls}" var="data">
+                                    <aura:if isTrue="{!data.type == 'VIDEO'}">
+                                        <video width="320" height="240" controls="true">
+                                            <source src="{!data.path}" type="video/mp4" />
+                                            Your browser does not support HTML5 video.
+                                        </video>
+                                    </aura:if>
+                                    <aura:if isTrue="{!data.type == 'IMAGE'}">
+                                        <img src="{!data.path}" width="320" height="240" />
+                                    </aura:if>
+                                    <aura:if isTrue="{!data.type == 'ANIMATION'}">
+                                        <img src="{!data.path}" width="320" height="240" />
+                                    </aura:if>
+                                    <aura:if isTrue="{!data.type == 'YOUTUBE'}">
+                                        <iframe src="{!data.path}" width="320" height="240" />
+                                    </aura:if>
+                                    <aura:if isTrue="{!data.type == 'FILE'}">
+                                        <a href="{!data.path}" download="true">Download</a>
+                                    </aura:if>
+                                    <br/>
+                                </aura:iteration>
+                                <ui:outputText class="word-break" value="{!msg.message}" />
+                                <div class="DateTime">
+                                    {!msg.CreatedDateForMessage}
+                                </div>
+                            </div>
+                            
+                        </aura:if>
+                    </span>
+                </aura:iteration>
+            </div>
+        </div>
+    </div>
+    <aura:renderIf isTrue="{!v.permissionErrorMessage == null}">
+        <div class="latestmessagesheader" onclick="{!c.composeMessage}">
+            {!$Label.smagicinteract.CONFG_SND_SMS}
+        </div>
+
+        <table class="smsTableClass">
+            <thead>
+                <tr>
+                    <th>
+                        <label>
+                            <ui:inputSelect aura:id="senderId" class="dropDownClass">
+                                <aura:iteration items="{!v.senderList}" var="senderId">
+                                    <ui:inputSelectOption text="{!senderId.name}" label="{!senderId.label}"/>
+                                </aura:iteration>
+                            </ui:inputSelect>
+                        </label>
+                    </th>
+                </tr>
+
+                <tr>
+                    <th>
+                        <label>
+                            <ui:inputSelect aura:id="phoneFieldId" class="dropDownClass">
+                                <aura:iteration items="{!v.phoneList}" var="field">
+                                    <ui:inputSelectOption text="{!field.name}" label="{!field.label}"/>
+                                </aura:iteration>
+                            </ui:inputSelect>
+                        </label>
+                    </th>
+                </tr>
+
+                <tr>
+                    <th >
+                        <label>
+                            <ui:inputSelect aura:id="templateId" change="{!c.selectTemplate}" class="dropDownClass">
+                                <aura:iteration items="{!v.templateNameList}" var="template">
+                                    <ui:inputSelectOption text="{!template.name}" label="{!template.label}"/>
+                                </aura:iteration>
+                            </ui:inputSelect>
+                        </label>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <label>
+                            {!$Label.smagicinteract.CHAR_COUNT} : {!v.smsText ? v.smsCharLimit - v.smsText.length : v.smsCharLimit}
+                        </label>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <label>
+
+                            <ui:inputTextArea aura:id="smsTextId"
+                                              rows="4"
+                                              placeholder="{!$Label.smagicinteract.TYPE_MSG}"
+                                              class="smsTxtBoxClass"
+                                              value="{!v.smsText}"
+                                              keyup="{!c.onMessageChange}"
+                                              maxlength="{!v.smsCharLimit}"
+                                              updateOn="keyup"
+                                              disabled="{!v.allowToChangeTemplateSelection}"/>
+                        </label>
+                    </th>
+                </tr>
+                <aura:renderIf isTrue="{!v.allowToSendMMS}">
+                    <tr>
+                        <th>
+                            <label>
+                                <ui:inputText aura:id="mmsSubject" class="width-100" placeholder="Enter MMS Subject here" />
+                            </label>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="file" aura:id="upload_file"></input>
+                            <ui:button class="uploadfilebutton" label="{!$Label.smagicinteract.LABEL_REMOVE}" press="{!c.removeFile}"/>
+                            <ui:button class="uploadfilebutton" label="{!$Label.smagicinteract.LABEL_ATTACH}" press="{!c.uploadFile}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <tr>
+                            <td>Uploaded file link:</td>
+                            <td>{!v.fileUrl}</td>
+                        </tr>
+                    </tr>
+                </aura:renderIf>
+                <tr>
+                    <th>
+                        <label>
+                            <ui:button aura:id="button" class="sendButton" label="{!$Label.smagicinteract.CONFG_SND_SMS}" press="{!c.sendSMS}"/>
+                        </label>
+                    </th>
+                </tr>
+
+            </thead>
+        </table>
+    </aura:renderIf>
+
+</aura:component>

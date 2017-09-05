@@ -1,0 +1,16 @@
+<apex:page standardController="Family_Data__c"> 
+     <script  
+         src="/soap/ajax/29.0/connection.js"  
+         type="text/javascript"> 
+     </script> 
+     <script type="text/javascript"> 
+         function alerthere(){ 
+           alert('An Error has Occurred. Error: ');
+           }
+     </script> 
+     <input  
+         type="button"  
+         style="width:10;height:30px"  
+         value="Alert Here" 
+         onclick="alerthere()"/> 
+</apex:page>

@@ -1,0 +1,30 @@
+<apex:page standardController="Family_Data__c" extensions="phoneconsole2">
+  <apex:form >
+  
+     <apex:pageBlock title="Please Enter name and phone number">
+     
+     <apex:pageBlockButtons >
+         <apex:commandButton Action="{!pho}" value="Save"/>
+         <apex:commandButton Action="{!Cancel}" Value="Cancel"/>
+     </apex:pageBlockButtons>
+      <apex:pageBlockSection title="please enter user  Name">
+     
+            <apex:inputField value="{!Family_Data__c.name}"/>
+        
+      </apex:pageBlockSection>     
+     
+     <apex:pageBlockSection title="please enter phone number">
+     
+            <apex:inputField value="{!Family_Data__c.phone__c}"/>  
+            
+     </apex:pageBlockSection>
+    
+          <apex:tabPanel >
+          <apex:tab labelWidth="20" label="here we go">some how</apex:tab>
+     </apex:tabPanel>
+     
+    </apex:pageBlock>
+     
+   </apex:form>
+  
+</apex:page>

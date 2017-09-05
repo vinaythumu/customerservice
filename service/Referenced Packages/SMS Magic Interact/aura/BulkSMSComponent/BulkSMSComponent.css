@@ -1,0 +1,80 @@
+.THIS .textTransform{
+   text-transform: capitalize;
+}
+.THIS .removeButton {
+    line-height : 15px;
+    left : 20px;
+}
+.THIS .inputFile {    
+}
+.THIS.auraMessageTitle h4{
+    display:inline-block;
+    margin-right: 10px;
+}
+.THIS .addPadding {
+    padding-bottom:18px;
+}
+.THIS .addInstructions {
+    width : 20px;
+    height : 20px;
+    border-radius : 20px;
+    background : bisque;
+    text-indent : 2px;
+    font-size : larger;
+    border-style : double;
+}
+.THIS .addWordBreak {
+}
+.THIS .addMargin {
+    margin-top:10px;
+}
+.THIS .unrelatedTable {
+    border : solid;
+    border-width : thin;
+    border-color : lavender;
+}
+.THIS .addBorder {
+    border : solid;
+    border-width : thin;
+    border-color : lavender;
+    border-radius: 4px;
+}
+.THIS .textSearch{
+    padding: .2rem .65rem;
+}
+.THIS .unrelatedTableButton {
+    line-height: 1.875;
+}
+.THIS .tableHeading {
+    font-weight: 400;
+    font-size: 1.1rem;
+}
+.THIS .closeIconButton {
+    
+}
+.THIS .tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+.THIS .tooltiptext {
+    visibility: hidden;
+    background-color: #16325c;
+    color: #fff;
+    border-radius: 4px;
+    padding: 5px;
+    
+    /* Position the tooltip */
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -200px;
+    width:255px;
+}
+.THIS .tooltiptext p::before {
+    content: '-';
+    margin-right: 5px;
+}
+.THIS .tooltip:hover .tooltiptext {
+    visibility: visible;
+}

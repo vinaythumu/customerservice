@@ -1,0 +1,42 @@
+<apex:page controller="accountrecordname">
+
+  <apex:form >
+  
+     <apex:pageBlock >
+     
+    <apex:pageBlockButtons >
+      <apex:commandButton Action="{!searchbar}" value="search"/>
+    </apex:pageBlockButtons>
+     
+        <apex:pageBlockSection title="please enter the account name">
+        
+        <apex:outputText >Account Name</apex:outputText>
+        <apex:inputtext value="{!name}"/>
+        
+        <apex:pageBlockTable value="{!acc}" var="itr">
+           <apex:column >
+           
+            <apex:facet name="header">Name</apex:facet> 
+          
+            
+             {!itr.name}
+           </apex:column>
+           
+            <apex:column >
+           
+            <apex:facet name="header">id</apex:facet>
+           
+            
+             {!itr.id}
+           </apex:column>
+        
+        </apex:pageBlockTable>
+        
+        
+        </apex:pageBlockSection>
+     
+     </apex:pageBlock>
+  
+  </apex:form>
+  
+</apex:page>
